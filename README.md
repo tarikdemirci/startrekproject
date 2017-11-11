@@ -1,1 +1,1 @@
-# Star Trek Project [![Build Status](https://travis-ci.org/tarikdemirci/startrekproject.svg?branch=master)](https://travis-ci.org/tarikdemirci/startrekproject)
+# Star Trek Project [![Build Status](https://travis-ci.org/tarikdemirci/startrekproject.svg?branch=master)](https://travis-ci.org/tarikdemirci/startrekproject) [![Maintainability](https://api.codeclimate.com/v1/badges/65540663e74e9a071c7c/maintainability)](https://codeclimate.com/github/tarikdemirci/startrekproject/maintainability)
