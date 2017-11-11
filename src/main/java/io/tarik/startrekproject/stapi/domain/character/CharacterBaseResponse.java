@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class CharacterBaseResponse {
-    private ResponsePage responsePage;
-    private List<CharacterBase> characterBase;
+    private ResponsePage page;
+    private List<CharacterBase> characters;
 
 }

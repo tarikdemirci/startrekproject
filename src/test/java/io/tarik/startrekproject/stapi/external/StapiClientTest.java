@@ -21,8 +21,8 @@ public class StapiClientTest {
     @Test
     public void searchCharacterByName() throws Exception {
         CharacterBaseResponse characterBaseResponse = stapiClient.searchCharacterByName("Uhura", 0);
-        assertEquals(3, characterBaseResponse.getCharacterBase().size());
-        assertEquals("CHMA0000068639", characterBaseResponse.getCharacterBase().get(0).getUid());
-        assertEquals("Nyota Uhura", characterBaseResponse.getCharacterBase().get(0).getName());
+        assertEquals(3, characterBaseResponse.getCharacters().size());
+        assertEquals("CHMA0000068639", characterBaseResponse.getCharacters().get(0).getUid());
+        assertEquals("Nyota Uhura", characterBaseResponse.getCharacters().get(0).getName());
     }
 }
