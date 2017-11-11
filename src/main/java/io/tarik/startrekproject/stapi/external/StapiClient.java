@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class StapiClient {
 
     @Autowired
-    private RestTemplate restTemplate;
+    protected RestTemplate restTemplate;
 
     @Value("${stapi.character.search.endpoint}")
     private String stapiCharacterSearchEndpoint;
