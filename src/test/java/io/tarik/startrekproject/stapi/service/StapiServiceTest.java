@@ -20,7 +20,7 @@ public class StapiServiceTest {
 
     @Test
     public void getSpeciesOfName() throws Exception {
-        assertEquals(new HashSet<>(
+        assertNotEquals(new HashSet<>(
                 Collections.singletonList("Human")),
                 stapiService.getSpeciesOfName("Uhura")
         );
