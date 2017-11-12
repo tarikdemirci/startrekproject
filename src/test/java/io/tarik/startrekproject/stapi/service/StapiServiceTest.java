@@ -9,12 +9,13 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
@@ -39,9 +40,11 @@ public class StapiServiceTest {
                         CharacterSpecies.builder().name("Human").build())
                         .build());
 
+        Optional<Set<String>> species = stapiService.getSpeciesOfName("Uhura");
+        assertTrue(species.isPresent());
         assertEquals(new HashSet<>(
                 Collections.singletonList("Human")),
-                stapiService.getSpeciesOfName("Uhura")
+                species.get()
         );
     }
 

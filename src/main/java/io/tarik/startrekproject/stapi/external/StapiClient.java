@@ -6,8 +6,6 @@ import io.tarik.startrekproject.stapi.domain.character.CharacterFull;
 import io.tarik.startrekproject.stapi.domain.character.CharacterFullResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -21,8 +19,7 @@ import java.util.stream.Stream;
 @Component
 public class StapiClient {
 
-    @Autowired
-    protected RestTemplate restTemplate;
+    protected final RestTemplate restTemplate;
 
     @Value("${stapi.character.search.endpoint}")
     private String stapiCharacterSearchEndpoint;
@@ -30,9 +27,9 @@ public class StapiClient {
     @Value("${stapi.character.endpoint}")
     private String stapiCharacterEndpoint;
 
-    @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        return builder.build();
+    @Autowired
+    public StapiClient(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     protected CharacterBaseResponse searchCharacterByName(String name, int pageNumber) {
