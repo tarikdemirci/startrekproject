@@ -61,6 +61,13 @@ public class StapiService {
             if (exc.getCause() instanceof ResourceAccessException
                     && exc.getCause().getCause() instanceof SocketTimeoutException) {
                 logger.error("Timeout occurred during Stapi connection");
+            } else if (exc.getCause() instanceof HttpClientErrorException) {
+                HttpClientErrorException httpClientErrorException = (HttpClientErrorException) exc.getCause();
+                if (httpClientErrorException.getRawStatusCode() == 403) {
+                    logger.error("Stapi request quota has been consumed. Please try again later.");
+                } else {
+                    logger.error(defaultErrorMessage, exc);
+                }
             } else {
                 logger.error(defaultErrorMessage, exc);
             }
