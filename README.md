@@ -54,6 +54,11 @@ User  +----> | CliRunner |
                                  +---------------+          +---------------+
 
 ```
+## Implementation Details
+- I've tried to consume Stapi as parallel as possible. 
+First I've used Java 8's parallel streams. 
+I couldn't reached the massive parallelism I've aimed since it uses its default thread pool. So I've used a trick.
+Executing parallel streams as a task in custom ForkJoinPool solves the problem. Check related links section for more details.
 
 ## Notes
 - Sometimes Stapi takes too long to respond. Default timeout for each stapi connection is 10 secs. You can change it in application.properties
@@ -63,3 +68,5 @@ User  +----> | CliRunner |
 ## Related Links
 - Stapi
   - http://stapi.co/
+- Java 8 parallel stream thread pool limitation
+  - https://stackoverflow.com/questions/21163108/custom-thread-pool-in-java-8-parallel-stream
