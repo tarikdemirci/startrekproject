@@ -1,0 +1,76 @@
+{
+  "character": {
+    "uid": "CHMA0000115364",
+    "name": "Nyota Uhura",
+    "gender": "F",
+    "yearOfBirth": 2233,
+    "monthOfBirth": null,
+    "dayOfBirth": null,
+    "placeOfBirth": null,
+    "yearOfDeath": null,
+    "monthOfDeath": null,
+    "dayOfDeath": null,
+    "placeOfDeath": null,
+    "height": null,
+    "weight": null,
+    "deceased": null,
+    "bloodType": null,
+    "maritalStatus": null,
+    "serialNumber": null,
+    "hologramActivationDate": null,
+    "hologramStatus": null,
+    "hologramDateStatus": null,
+    "hologram": false,
+    "fictionalCharacter": false,
+    "mirror": false,
+    "alternateReality": true,
+    "performers": [
+      {
+        "uid": "PEMA0000085387",
+        "name": "Zoë Saldana",
+        "birthName": "Zoë Yadira Zaldaña Nazario",
+        "gender": "F",
+        "dateOfBirth": "1978-06-19",
+        "placeOfBirth": "Passaic, New Jersey, USA",
+        "dateOfDeath": null,
+        "placeOfDeath": null,
+        "animalPerformer": false,
+        "disPerformer": false,
+        "ds9Performer": false,
+        "entPerformer": false,
+        "filmPerformer": true,
+        "standInPerformer": false,
+        "stuntPerformer": false,
+        "tasPerformer": false,
+        "tngPerformer": false,
+        "tosPerformer": false,
+        "videoGamePerformer": true,
+        "voicePerformer": false,
+        "voyPerformer": false
+      }
+    ],
+    "episodes": [],
+    "movies": [],
+    "characterSpecies": [
+      {
+        "uid": "SPMA0000026314",
+        "name": "Human",
+        "numerator": 1,
+        "denominator": 1
+      }
+    ],
+    "characterRelations": [],
+    "titles": [
+      {
+        "uid": "TIMA0000001719",
+        "name": "Lieutenant",
+        "militaryRank": true,
+        "fleetRank": true,
+        "religiousTitle": false,
+        "position": false,
+        "mirror": false
+      }
+    ],
+    "organizations": []
+  }
+}

@@ -2,6 +2,8 @@ package io.tarik.startrekproject.stapi.external;
 
 import io.tarik.startrekproject.stapi.domain.character.CharacterBase;
 import io.tarik.startrekproject.stapi.domain.character.CharacterBaseResponse;
+import io.tarik.startrekproject.stapi.domain.character.CharacterFull;
+import io.tarik.startrekproject.stapi.domain.character.CharacterFullResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -24,6 +26,9 @@ public class StapiClient {
 
     @Value("${stapi.character.search.endpoint}")
     private String stapiCharacterSearchEndpoint;
+
+    @Value("${stapi.character.endpoint}")
+    private String stapiCharacterEndpoint;
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
@@ -56,5 +61,15 @@ public class StapiClient {
                 characterBaseResponseFirstPage.getCharacters().stream(),
                 characterBaseStreamOfRemainingPages
         ).collect(Collectors.toList());
+    }
+
+    public CharacterFull getCharacterByUid(String uid) {
+        return restTemplate.getForObject(
+                stapiCharacterEndpoint,
+                CharacterFullResponse.class,
+                new HashMap<String, Object>() {{
+                    put("uid", uid);
+                }}
+        ).getCharacter();
     }
 }

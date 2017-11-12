@@ -2,6 +2,7 @@ package io.tarik.startrekproject.stapi.external;
 
 import io.tarik.startrekproject.stapi.domain.character.CharacterBase;
 import io.tarik.startrekproject.stapi.domain.character.CharacterBaseResponse;
+import io.tarik.startrekproject.stapi.domain.character.CharacterFull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -75,5 +76,24 @@ public class StapiClientTest {
         assertEquals("F. Sepulveda", characters.get(0).getName());
         assertEquals("CHMA0000005581", characters.get(120).getUid());
         assertEquals("Edward Jellico", characters.get(120).getName());
+    }
+
+    @Test
+    public void getCharacterByUid() throws Exception {
+        byte[] responseBody = readAllBytes(get("src", "test", "resources", "mock", "response",
+                "stapi.character.uhura.response.json"));
+
+        mockServer.expect(anything())
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess(responseBody, MediaType.APPLICATION_JSON));
+
+        CharacterFull character = stapiClient.getCharacterByUid("CHMA0000115364");
+
+        mockServer.verify();
+        assertEquals("CHMA0000115364", character.getUid());
+        assertEquals("Nyota Uhura", character.getName());
+        assertEquals(1, character.getCharacterSpecies().size());
+        assertEquals("SPMA0000026314", character.getCharacterSpecies().get(0).getUid());
+        assertEquals("Human", character.getCharacterSpecies().get(0).getName());
     }
 }
