@@ -5,3 +5,6 @@
 
 ## Run
 - `target/startrekproject-executable Uhura`
+
+## Notes
+- Sometimes Stapi takes too long to respond. Default timeout for each stapi connection is 10 secs. You can change it in application.properties
