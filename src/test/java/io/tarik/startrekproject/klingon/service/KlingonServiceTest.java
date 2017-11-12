@@ -30,4 +30,16 @@ public class KlingonServiceTest {
                 klingonText
         );
     }
+
+    @Test
+    public void translateToKlingon_nameWithSpace() throws Exception {
+        Optional<List<String>> optionalKlingonText = klingonService.translateToKlingon("Nyota Uhura");
+        assertTrue("No result", optionalKlingonText.isPresent());
+
+        List<String> klingonText = optionalKlingonText.get();
+        assertEquals(
+                Arrays.asList("0xF8DB", "0xF8E8", "0xF8DD", "0xF8E3", "0xF8D0", "0x0020", "0xF8E5", "0xF8D6", "0xF8E5", "0xF8E1", "0xF8D0"),
+                klingonText
+        );
+    }
 }
