@@ -57,7 +57,15 @@ public class StapiService {
                 logger.error(defaultErrorMessage, exc);
             }
             return Optional.empty();
-        } catch (InterruptedException|ExecutionException exc) {
+        } catch (ExecutionException exc) {
+            if (exc.getCause() instanceof ResourceAccessException
+                    && exc.getCause().getCause() instanceof SocketTimeoutException) {
+                logger.error("Timeout occurred during Stapi connection");
+            } else {
+                logger.error(defaultErrorMessage, exc);
+            }
+            return Optional.empty();
+        } catch (InterruptedException exc) {
             logger.error(defaultErrorMessage, exc);
             return Optional.empty();
         }
