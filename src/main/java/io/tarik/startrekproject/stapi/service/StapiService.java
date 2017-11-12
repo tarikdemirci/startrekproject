@@ -1,16 +1,21 @@
 package io.tarik.startrekproject.stapi.service;
 
+import io.tarik.startrekproject.stapi.domain.character.CharacterBase;
 import io.tarik.startrekproject.stapi.domain.character.CharacterSpecies;
 import io.tarik.startrekproject.stapi.external.StapiClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
 import java.net.SocketTimeoutException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
 
 @Component
@@ -25,21 +30,35 @@ public class StapiService {
     }
 
     public Optional<Set<String>> getSpeciesOfName(String name) {
+        String defaultErrorMessage = "Unable to fetch species of name";
         try {
-            return Optional.of(
-                    stapiClient.getAllCharactersByName(name).stream()
+
+            List<CharacterBase> characterBaseList = stapiClient.getAllCharactersByName(name);
+            ForkJoinPool myPool = new ForkJoinPool(characterBaseList.size());
+
+            return Optional.of(myPool.submit(() ->
+                    characterBaseList.parallelStream()
                             .map(characterBase -> stapiClient.getCharacterByUid(characterBase.getUid()))
-                            .parallel()
-                            .flatMap(characterFull -> characterFull.getCharacterSpecies().stream())
-                            .map(CharacterSpecies::getName)
-                            .collect(Collectors.toSet())
-            );
+                    .flatMap(characterFull -> characterFull.getCharacterSpecies().stream())
+                    .map(CharacterSpecies::getName)
+                    .collect(Collectors.toSet())
+            ).get());
         } catch (ResourceAccessException exc) {
             if (exc.getCause() instanceof SocketTimeoutException) {
                 logger.error("Timeout occurred during Stapi connection");
             } else {
-                logger.error("Unable to fetch species of name", exc);
+                logger.error(defaultErrorMessage, exc);
             }
+            return Optional.empty();
+        } catch (HttpClientErrorException exc) {
+            if (exc.getRawStatusCode() == 403) {
+                logger.error("Stapi request quota has been consumed. Please try again later.");
+            } else {
+                logger.error(defaultErrorMessage, exc);
+            }
+            return Optional.empty();
+        } catch (InterruptedException|ExecutionException exc) {
+            logger.error(defaultErrorMessage, exc);
             return Optional.empty();
         }
     }

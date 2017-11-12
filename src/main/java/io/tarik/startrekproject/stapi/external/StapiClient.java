@@ -12,6 +12,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -45,14 +47,23 @@ public class StapiClient {
         );
     }
 
-    public List<CharacterBase> getAllCharactersByName(String name) {
+    public List<CharacterBase> getAllCharactersByName(String name) throws ExecutionException, InterruptedException {
         CharacterBaseResponse characterBaseResponseFirstPage = searchCharacterByName(name, 0);
+        Stream<CharacterBase> characterBaseStreamOfRemainingPages;
 
-        Stream<CharacterBase> characterBaseStreamOfRemainingPages =
-                IntStream.range(1, characterBaseResponseFirstPage.getPage().getTotalPages())
-                    .parallel()
-                    .mapToObj(pageNo -> searchCharacterByName(name, pageNo))
-                    .flatMap(response -> response.getCharacters().stream());
+        int remainingPageCount = characterBaseResponseFirstPage.getPage().getTotalPages() - 1;
+        if (remainingPageCount > 0) {
+            ForkJoinPool myPool = new ForkJoinPool(remainingPageCount);
+
+            characterBaseStreamOfRemainingPages = myPool.submit(() ->
+                    IntStream.range(1, 1 + remainingPageCount)
+                            .parallel()
+                            .mapToObj(pageNo -> searchCharacterByName(name, pageNo))
+                            .flatMap(response -> response.getCharacters().stream())
+            ).get();
+        } else {
+            characterBaseStreamOfRemainingPages = Stream.empty();
+        }
 
         return Stream.concat(
                 characterBaseResponseFirstPage.getCharacters().stream(),
